@@ -57,4 +57,4 @@ npm.cmd run build
 - `docs/`：全部简体中文阶段记录、设计、验收、问题和讲解；从[阶段文档目录](docs/阶段文档目录.md)阅读。
 - `设计预览/`：已选及备选设计草图与示例素材，属于开发设计记录。
 
-真实凭据、上传文件、联调会话、缓存和构建产物均不提交Git。GitHub远程仓库尚需用户指定；本地Git提交不等于已上传GitHub。实验报告正文由用户自行撰写。
+真实凭据、上传文件、联调会话、缓存和构建产物均不提交Git。源码已按用户指定推送至[GitHub development分支](https://github.com/zhanghaoyang76/school-trade-system/tree/development)。实验报告正文由用户自行撰写。
