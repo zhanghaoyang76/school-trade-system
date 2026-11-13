@@ -4,6 +4,12 @@ frontend/dist/
 backend/config/application-local.properties
 backend/uploads/
 backend/.maven/
+backend/.m2/
+backend/data/
+backend/config/*local*.properties
+!backend/config/application-local.example.properties
+backend/generate.py
+.qa-local/
 *.log
 *.pid
 .superpowers/
@@ -12,3 +18,5 @@ backend/.maven/
 .idea/
 .vscode/
 output/
+/*.doc
+/*.pptx

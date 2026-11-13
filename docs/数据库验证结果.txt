@@ -1,0 +1,29 @@
+mysql_version
+8.0.43
+TABLE_NAME
+audit_logs
+blacklists
+cart_items
+categories
+checkout_batches
+order_items
+orders
+point_entries
+product_images
+products
+return_requests
+reviews
+shops
+uploaded_files
+users
+wallet_entries
+wallets
+account_type	available	frozen
+ESCROW	0.00	0.00
+FEE	0.00	0.00
+USER	5000.00	0.00
+products
+6
+status	orders_count
+CONFIRMED	1
+CANCELLED	1
