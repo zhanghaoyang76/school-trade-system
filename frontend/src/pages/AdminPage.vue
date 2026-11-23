@@ -647,6 +647,7 @@ watch(
         <label
           >充值金额（元）<el-input-number
             v-model="rechargeForm.amount"
+            :step="0.01"
             :min="0.01"
             :max="1000000"
             :precision="2"

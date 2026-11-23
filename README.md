@@ -4,6 +4,8 @@ Java21、Spring Boot3.5.16、MyBatis Plus3.5.18、MySQL8、Vue3、Vite、Element
 
 ## 开发与启动
 
+本机配置完成后，先启动MySQL80服务，再依次双击项目根目录的`启动后端.bat`、`启动前端.bat`，保留两个窗口，访问http://localhost:5173。BAT会调用已有PowerShell启动脚本，启动失败后保留错误信息供查看。
+
 1. 启动本机MySQL服务，创建数据库：
 
 ```sql

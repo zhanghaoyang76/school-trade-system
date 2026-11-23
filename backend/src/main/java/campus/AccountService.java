@@ -40,11 +40,11 @@ public class AccountService {
         400,
         "账号须4至32位字母数字下划线，密码至少8位");
     require(
-        str(b, "bankAccount").matches("[0-9]{16}")
+        (str(b, "bankAccount").isBlank() || str(b, "bankAccount").matches("[0-9]{16}"))
             && str(b, "phone").matches("1[0-9]{10}")
             && str(b, "email").matches("[^@ ]+@[^@ ]+\\.[^@ ]+"),
         400,
-        "请检查银行账号、手机号和邮箱");
+        "请检查手机号和邮箱，银行账号如填写须为16位数字");
     require(
         !str(b, "name").isBlank() && !str(b, "city").isBlank() && !str(b, "gender").isBlank(),
         400,
@@ -144,9 +144,11 @@ public class AccountService {
   @Transactional
   public Object profile(long uid, Map<String, Object> b) {
     require(
-        !b.containsKey("bankAccount") || str(b, "bankAccount").matches("[0-9]{16}"),
+        !b.containsKey("bankAccount")
+            || str(b, "bankAccount").isBlank()
+            || str(b, "bankAccount").matches("[0-9]{16}"),
         400,
-        "银行账号须16位数字");
+        "银行账号如填写须为16位数字");
     for (String field : List.of("name", "city", "gender"))
       require(!b.containsKey(field) || !str(b, field).isBlank(), 400, "姓名城市性别不能为空");
     require(!b.containsKey("phone") || str(b, "phone").matches("1[0-9]{10}"), 400, "手机号格式错误");

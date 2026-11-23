@@ -44,8 +44,8 @@ watch(
   { immediate: true },
 );
 async function submit() {
-  if (register.value && !/^\d{16}$/.test(form.bankAccount)) {
-    error.value = "银行账号必须为16位数字";
+  if (register.value && form.bankAccount && !/^\d{16}$/.test(form.bankAccount)) {
+    error.value = "银行账号如填写须为16位数字";
     return;
   }
   if (
@@ -168,13 +168,12 @@ async function submit() {
                 label="不透露"
                 value="UNSPECIFIED" /></el-select></label
           ><label
-            >银行账号<el-input
+            >银行账号（选填）<el-input
               v-model="form.bankAccount"
-              required
               maxlength="16"
               minlength="16"
               inputmode="numeric"
-              placeholder="16位数字"
+              placeholder="可不填写；填写时须为16位数字"
           /></label>
         </div>
         <label

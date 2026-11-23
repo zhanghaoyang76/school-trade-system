@@ -131,4 +131,59 @@ class CatalogueAccountTest {
     assertThrows(BusinessException.class, () -> accounts.profile(uid, Map.of("name", "")));
     assertEquals("13800138000", db.one("select * from users where id=?", uid).get("phone"));
   }
+
+  @Test
+  void bothRolesCanRegisterWithoutBankAccount() {
+    for (String role : List.of("USER", "MERCHANT")) {
+      for (boolean omit : List.of(true, false)) {
+        var request = new MockHttpServletRequest();
+        var body = registrationBody(role, request);
+        if (omit) body.remove("bankAccount"); else body.put("bankAccount", "");
+        assertDoesNotThrow(() -> accounts.register(captcha(request, body), request));
+      }
+    }
+  }
+
+  @Test
+  void suppliedBankAccountMustStillHaveSixteenDigits() {
+    for (String role : List.of("USER", "MERCHANT")) {
+      var request = new MockHttpServletRequest();
+      var body = registrationBody(role, request);
+      body.put("bankAccount", "123abc");
+      assertThrows(BusinessException.class, () -> accounts.register(captcha(request, body), request));
+    }
+  }
+
+  @Test
+  void eitherRoleCanClearBankAccountButCannotSaveMalformedOne() {
+    for (String role : List.of("USER", "MERCHANT")) {
+      var request = new MockHttpServletRequest();
+      var body = registrationBody(role, request);
+      long uid = id((Map<String, Object>) accounts.register(captcha(request, body), request), "id");
+      assertDoesNotThrow(() -> accounts.profile(uid, Map.of("bankAccount", "")));
+      assertTrue(str(db.one("select * from users where id=?", uid), "bankAccount").isBlank());
+      assertThrows(BusinessException.class, () -> accounts.profile(uid, Map.of("bankAccount", "123")));
+    }
+  }
+
+  Map<String, Object> registrationBody(String role, MockHttpServletRequest request) {
+    var body = new HashMap<String, Object>();
+    body.put("username", "bank_" + UUID.randomUUID().toString().replace("-", "").substring(0, 12));
+    body.put("password", "testPassword123");
+    body.put("role", role);
+    body.put("name", "银行卡选填测试");
+    body.put("phone", "13800138000");
+    body.put("email", "bank@example.test");
+    body.put("city", "测试城市");
+    body.put("gender", "UNSPECIFIED");
+    body.put("bankAccount", "0123456789012345");
+    body.put("captcha", "1234");
+    if (role.equals("MERCHANT")) {
+      for (String purpose : List.of("LICENSE", "IDENTITY")) {
+        long file = db.insert("insert into uploaded_files(session_key,purpose) values(?,?)", request.getSession().getId(), purpose);
+        body.put(purpose.equals("LICENSE") ? "licenseFileId" : "identityFileId", file);
+      }
+    }
+    return body;
+  }
 }

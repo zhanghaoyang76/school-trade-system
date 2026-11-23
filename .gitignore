@@ -20,3 +20,10 @@ backend/generate.py
 output/
 /*.doc
 /*.pptx
+*.docx
+*.pdf
+*.zip
+docs/答辩资料/
+docs/报告*.md
+docs/实验报告*.md
+/实验报告*.txt
